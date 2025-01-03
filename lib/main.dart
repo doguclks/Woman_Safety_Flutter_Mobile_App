@@ -1,7 +1,8 @@
 import 'package:app/pages/emergency_contact_page.dart';
+import 'package:app/pages/guide_page.dart';
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
-import 'colors/colors.dart';
+import 'themes/colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Yalnız Değilsin',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         appBarTheme: const AppBarTheme(

@@ -53,4 +53,9 @@ class ContactService {
       'phoneNumber': prefs.getString('emergency_contact_number'),
     };
   }
+
+  Future<String?> getEmergencyContact() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('emergency_contact');
+  }
 }

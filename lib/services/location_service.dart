@@ -54,4 +54,35 @@ class LocationService {
       );
     }
   }
+
+  Future<String> getLocationString() async {
+    try {
+      Position? position = await getCurrentLocation();
+      if (position == null) return 'Konum alınamadı';
+      return 'Konum: https://www.google.com/maps?q=${position.latitude},${position.longitude}';
+    } catch (e) {
+      return 'Konum alınamadı';
+    }
+  }
+
+  Future<void> sendEmergencySMS(String phoneNumber) async {
+    try {
+      String locationString = await getLocationString();
+      String message = 'YARDIM EDİN!\n$locationString';
+
+      final Uri smsUri = Uri(
+        scheme: 'sms',
+        path: phoneNumber,
+        queryParameters: {'body': message},
+      );
+
+      if (await canLaunchUrl(smsUri)) {
+        await launchUrl(smsUri);
+      } else {
+        throw 'SMS gönderilemedi';
+      }
+    } catch (e) {
+      print('SMS gönderme hatası: $e');
+    }
+  }
 }

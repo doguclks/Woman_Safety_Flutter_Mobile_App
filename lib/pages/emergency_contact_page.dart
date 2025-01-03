@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
-import '../colors/colors.dart';
+import '../themes/colors.dart';
 import '../services/contact_service.dart';
 import '../widgets/emergency_contact_form.dart';
 import '../widgets/contact_picker.dart';

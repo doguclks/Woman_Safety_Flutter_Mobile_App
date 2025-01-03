@@ -3,11 +3,10 @@ import 'package:app/widgets/custom_icon_button.dart';
 import 'package:app/widgets/record_button_widget.dart';
 import 'package:flutter/material.dart';
 import '../colors/colors.dart';
-import '../services/location_service.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:app/pages/emergency_contact_page.dart';
+import 'package:app/pages/guide_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -46,7 +45,18 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _stopListening() {
+    _speech.stop();
+    setState(() => _isListening = false);
+  }
+
   void _startListening() async {
+    // Eğer zaten dinliyorsa, dinlemeyi durdur
+    if (_isListening) {
+      _stopListening();
+      return;
+    }
+
     await checkAndRequestMicrophonePermission(); // İzin kontrolü ve isteme
 
     if (await Permission.microphone.isGranted) {
@@ -77,13 +87,15 @@ class _HomePageState extends State<HomePage> {
             _isListening = false;
           });
           _speech.stop();
+          await RecordButtonWidget(onPressed: () {}, isRecording: false)
+              .handleOffensiveContent(context);
         } else {
           setState(() {
             _isOffensive = false;
           });
         }
       },
-      listenFor: Duration(hours: 10), // 10 saniye boyunca dinle
+      listenFor: Duration(seconds: 10), // 10 saniye boyunca dinle
       pauseFor: Duration(seconds: 20), // 1 saniye boşluk ver
       listenOptions: stt.SpeechListenOptions(partialResults: true),
       onSoundLevelChange: (level) {
@@ -140,11 +152,29 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                CustomIconButton(
-                  onPressed: () {
-                    // Bilgi iconu işlevselliği buraya eklenebilir
-                  },
-                  iconData: Icons.info_outline,
+                Column(
+                  children: [
+                    CustomIconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const GuidePage(),
+                          ),
+                        );
+                      },
+                      iconData: Icons.info_outline,
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      '(Uygulama Hakkında)',
+                      style: TextStyle(
+                        color: AppColors.textColor,
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ],
             ),

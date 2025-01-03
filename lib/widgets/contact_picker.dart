@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
-import '../colors/colors.dart';
+import '../themes/colors.dart';
 
 class ContactPicker extends StatelessWidget {
   final Contact? selectedContact;

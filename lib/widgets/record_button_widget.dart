@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../colors/colors.dart';
+import '../themes/colors.dart';
+import '../services/contact_service.dart';
+import '../services/location_service.dart';
 
 class RecordButtonWidget extends StatefulWidget {
   final VoidCallback onPressed;
@@ -11,6 +13,20 @@ class RecordButtonWidget extends StatefulWidget {
     required this.isRecording,
   });
 
+  Future<void> handleOffensiveContent(BuildContext context) async {
+    final locationService = LocationService(context);
+    final contactService = ContactService();
+
+    String? emergencyContact = await contactService.getEmergencyContact();
+    if (emergencyContact != null && emergencyContact.isNotEmpty) {
+      await locationService.sendEmergencySMS(emergencyContact);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Acil durum kontağı ayarlanmamış!')),
+      );
+    }
+  }
+
   @override
   State<RecordButtonWidget> createState() => _RecordButtonWidgetState();
 }
@@ -18,10 +34,13 @@ class RecordButtonWidget extends StatefulWidget {
 class _RecordButtonWidgetState extends State<RecordButtonWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late final LocationService _locationService;
+  final ContactService _contactService = ContactService();
 
   @override
   void initState() {
     super.initState();
+    _locationService = LocationService(context);
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
@@ -54,7 +73,7 @@ class _RecordButtonWidgetState extends State<RecordButtonWidget>
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: AppColors.primaryColor.withOpacity(0.5),
+                        color: Colors.red.withOpacity(0.5),
                         width: 2,
                       ),
                     ),
@@ -70,7 +89,7 @@ class _RecordButtonWidgetState extends State<RecordButtonWidget>
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: AppColors.primaryColor.withOpacity(0.3),
+                        color: Colors.red.withOpacity(0.3),
                         width: 2,
                       ),
                     ),
@@ -85,8 +104,7 @@ class _RecordButtonWidgetState extends State<RecordButtonWidget>
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color:
-                      widget.isRecording ? Colors.red : AppColors.primaryColor,
+                  color: widget.isRecording ? Colors.red : Colors.red,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
