@@ -62,6 +62,7 @@ class _EmergencyContactPageState extends State<EmergencyContactPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
         title: const Text(
           'Acil Durumda Bildirilecek Kişi',

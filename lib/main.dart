@@ -18,8 +18,9 @@ class MyApp extends StatelessWidget {
       title: 'Yalnız Değilsin',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        appBarTheme: const AppBarTheme(
+        appBarTheme: AppBarTheme(
           backgroundColor: AppColors.backgroundColor,
+          titleTextStyle: TextStyle(color: AppColors.textColor),
         ),
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),

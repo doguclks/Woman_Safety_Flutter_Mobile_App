@@ -9,6 +9,7 @@ class GuidePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nasıl Kullanılır?'),
+        iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
       ),
       body: SingleChildScrollView(

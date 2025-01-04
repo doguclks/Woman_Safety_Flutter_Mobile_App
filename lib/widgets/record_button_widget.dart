@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../themes/colors.dart';
 import '../services/contact_service.dart';
 import '../services/location_service.dart';
 
@@ -17,12 +16,25 @@ class RecordButtonWidget extends StatefulWidget {
     final locationService = LocationService(context);
     final contactService = ContactService();
 
-    String? emergencyContact = await contactService.getEmergencyContact();
-    if (emergencyContact != null && emergencyContact.isNotEmpty) {
+    try {
+      String? emergencyContact = await contactService.getEmergencyContact();
+
+      if (emergencyContact == null || emergencyContact.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Acil durum kontağı ayarlanmamış!')),
+        );
+        return;
+      }
+
       await locationService.sendEmergencySMS(emergencyContact);
-    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Acil durum kontağı ayarlanmamış!')),
+        const SnackBar(
+            content: Text('Acil durum kontağına konum bilgisi gönderildi')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Konum bilgisi gönderilirken bir hata oluştu')),
       );
     }
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import '../colors/colors.dart';
+import '../themes/colors.dart';
 
 class EmergencyContactForm extends StatelessWidget {
   final Function(String) onNameChanged;

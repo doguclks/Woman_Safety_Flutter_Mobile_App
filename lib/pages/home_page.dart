@@ -2,7 +2,7 @@ import 'package:app/API/send_text_to_api.dart';
 import 'package:app/widgets/custom_icon_button.dart';
 import 'package:app/widgets/record_button_widget.dart';
 import 'package:flutter/material.dart';
-import '../colors/colors.dart';
+import '../themes/colors.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:app/pages/emergency_contact_page.dart';
