@@ -2,6 +2,8 @@ import 'package:app/API/send_text_to_api.dart';
 import 'package:app/widgets/custom_icon_button.dart';
 import 'package:app/widgets/record_button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import '../themes/colors.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:permission_handler/permission_handler.dart';
@@ -77,10 +79,12 @@ class _HomePageState extends State<HomePage> {
       onResult: (val) async {
         setState(() {
           _text = val.recognizedWords;
+          print("Text = $_text");
         });
 
         // Metni API'ye gönder ve sonucu kontrol et
         var response = await sendTextToAPI(_text);
+        
         if (response == "offensive") {
           setState(() {
             _isOffensive = true;
@@ -131,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   children: [
                     CustomIconButton(
-                      iconData: Icons.person_2_outlined,
+                      iconData: Symbols.person_add,
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -142,9 +146,10 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                     const SizedBox(height: 4),
-                    const Text(
-                      '(Acil Durumda Ulaşılacak Kişi)',
+                    Text(
+                      '(Acil Durumda Bildirilen Kişi)',
                       style: TextStyle(
+                        fontFamily: GoogleFonts.poppins().fontFamily,
                         color: AppColors.textColor,
                         fontSize: 12,
                       ),
@@ -163,12 +168,13 @@ class _HomePageState extends State<HomePage> {
                           ),
                         );
                       },
-                      iconData: Icons.info_outline,
+                      iconData: Symbols.help_outline,
                     ),
                     const SizedBox(height: 4),
-                    const Text(
+                    Text(
                       '(Uygulama Hakkında)',
                       style: TextStyle(
+                        fontFamily: GoogleFonts.poppins().fontFamily,
                         color: AppColors.textColor,
                         fontSize: 12,
                       ),
@@ -201,17 +207,19 @@ class _HomePageState extends State<HomePage> {
                     isRecording: _isListening,
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    "(Ses kaydını başlatmak için tıklayınız)",
+                  Text(
+                    _isListening
+                        ? "Ses kaydı başlatıldı"
+                        : "(Ses kaydını başlatmak için tıklayınız)",
                     style: TextStyle(
                       color: AppColors.textColor,
+                      fontFamily: GoogleFonts.poppins().fontFamily,
                     ),
                   ),
                   Text(
-                    _isOffensive
-                        ? "Ofansif cümle algılandı!"
-                        : "Dinleme devam ediyor...",
+                    _isOffensive ? "Ofansif cümle algılandı!" : "",
                     style: TextStyle(
+                      fontFamily: GoogleFonts.poppins().fontFamily,
                       fontSize: 20,
                       color: _isOffensive ? Colors.red : Colors.green,
                     ),
